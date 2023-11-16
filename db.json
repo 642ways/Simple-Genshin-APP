@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "fname": "Rin",
+      "lname": "Rin",
+      "email": "rinrins@gmail.com",
+      "password": "ilikehanako",
+      "cpassword": "ilikehanako",
+      "id": 1
+    },
+    {
+      "fname": "Daffa Maulana",
+      "lname": "Wisesa",
+      "email": "daffamaulanawisesa@gmail.com",
+      "password": "12345678",
+      "cpassword": "12345678",
+      "id": 2
+    },
+    {
+      "fname": "Fadel",
+      "lname": "Rizky",
+      "email": "fadel@gmail.com",
+      "password": "levina123",
+      "cpassword": "levina123",
+      "id": 3
+    }
+  ]
+}
