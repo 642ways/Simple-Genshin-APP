@@ -17,11 +17,17 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/genshin">
-                    Navbar
+                    Genshin
+                </Link>
+                <Link className="navbar-brand" to="/honkai">
+                    Honkai
+                </Link>
+                <Link className="navbar-brand" to="/about">
+                    About
                 </Link>
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <form className="d-flex">
+                    <form className="ms-auto d-flex">
                         {isLoggedIn ? (
                             <button className="btn btn-outline-secondary" onClick={handleLogout}>
                                 Logout
