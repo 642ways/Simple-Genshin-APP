@@ -2,8 +2,10 @@ import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../AuthContext'
 
 const Login = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -39,7 +41,8 @@ const Login = () => {
                     if (user.email === formData.email) {
                         if (user.password === formData.password) {
                             alert("Login Successfully")
-                            navigate('/')
+                            login();
+                            navigate('/genshin')
                         } else {
                             isvalid = false;
                             validationErrors.password = "Wrong Password; "

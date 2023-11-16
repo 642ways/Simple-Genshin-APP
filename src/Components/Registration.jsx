@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useAuth } from '../AuthContext'
 
 
 const Registration = () => {
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         fname: '',
         lname: '',
@@ -56,6 +58,7 @@ const Registration = () => {
             axios.post('http://localhost:8000/users', formData)
                 .then(result => {
                     alert("Registered Successfully")
+                    login();
                     navigate('/login')
                 })
                 .catch(err => console.log(err))

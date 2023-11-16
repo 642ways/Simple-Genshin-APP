@@ -9,9 +9,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />}></Route>
+        <Route path='/' element={<Login />}></Route>
         <Route path='/registration' element={<Registration />}></Route>
         <Route path='/login' element={<Login />}></Route>
+        <Route path='/genshin' element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
   )
