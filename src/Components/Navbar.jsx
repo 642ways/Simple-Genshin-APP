@@ -19,8 +19,8 @@ const Navbar = () => {
                 <Link className="navbar-brand" to="/genshin">
                     Genshin
                 </Link>
-                <Link className="navbar-brand" to="/honkai">
-                    Honkai
+                <Link className="navbar-brand" to="/artifact">
+                    Artifact
                 </Link>
                 <Link className="navbar-brand" to="/about">
                     About

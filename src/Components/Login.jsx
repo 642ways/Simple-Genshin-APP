@@ -35,7 +35,7 @@ const Login = () => {
             validationErrors.password = "Password Minimum Length is 8 characters!"
         }
 
-        axios.get('http://localhost:8000/users')
+        axios.get('http://localhost:3000/users')
             .then(result => {
                 result.data.map(user => {
                     if (user.email === formData.email) {
@@ -62,7 +62,7 @@ const Login = () => {
                 <div class="col-md-6 offset-md-3">
                     <div class="signup-form">
                         <form onSubmit={handleSubmit} class="mt-5 border p-4 bg-light shadow">
-                            <h4 class="mb-5 text-secondary">Log In</h4>
+                            <h4 class="mb-5 text-secondary">Login</h4>
                             {
                                 valid ? <></> :
                                     <span className='text-danger'>

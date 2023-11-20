@@ -23,6 +23,22 @@
       "password": "levina123",
       "cpassword": "levina123",
       "id": 3
+    },
+    {
+      "fname": "Faizal",
+      "lname": "Lutfi",
+      "email": "faizal2jz@gmail.com",
+      "password": "pepek123",
+      "cpassword": "pepek123",
+      "id": 4
+    },
+    {
+      "fname": "levina",
+      "lname": "safa",
+      "email": "levina@gmail.com",
+      "password": "sayang123",
+      "cpassword": "sayang123",
+      "id": 5
     }
   ]
 }

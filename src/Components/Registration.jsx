@@ -55,7 +55,7 @@ const Registration = () => {
         setValid(isvalid)
 
         if (Object.keys(validationErrors).length === 0) {
-            axios.post('http://localhost:8000/users', formData)
+            axios.post('http://localhost:3000/users', formData)
                 .then(result => {
                     alert("Registered Successfully")
                     login();
