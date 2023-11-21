@@ -18,6 +18,7 @@ const Honkai = () => {
     const [twopceffect, setTwopceffect] = useState([]);
     const [fourpceffect, setFourpceffect] = useState([]);
     const [rarity, setRarity] = useState("");
+    const [displayedSearch, setDisplayedSearch] = useState('');
 
     const api_url = `https://api.genshin.dev/artifacts/${search}`
     async function getArtifact() {
@@ -37,7 +38,7 @@ const Honkai = () => {
     getArtifact();
     var artiPic = ""
     if (search === "") {
-        artiPic = `https://enka.network/ui/UI_AvatarIcon_Ayaka.png`
+        artiPic = `https://api.genshin.dev/artifacts/blizzard-strayer/flower-of-life`
     } else {
         artiPic = `https://api.genshin.dev/artifacts/${search}/flower-of-life`
     }
@@ -46,6 +47,13 @@ const Honkai = () => {
         return input.replace(/\s+/g, '-').toLowerCase();
     };
 
+    const handleSearchChange = (e) => {
+        const inputValue = e.target.value;
+        setDisplayedSearch(inputValue);
+        setSearch(formatSearchInput(inputValue));
+    };
+
+
     return (
         <div>
             <Navbar />
@@ -53,8 +61,8 @@ const Honkai = () => {
                 <form className="search">
                     <input
                         className="input"
-                        value={search} // Use `value` instead of `defaultValue` for controlled input
-                        onChange={(e) => setSearch(formatSearchInput(e.target.value))}
+                        value={displayedSearch} // Use `value` instead of `defaultValue` for controlled input
+                        onChange={handleSearchChange}
                     />
                 </form>
                 <div className="container d-flex justify-content-center">

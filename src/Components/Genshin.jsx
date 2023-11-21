@@ -19,6 +19,7 @@ const Genshin = () => {
     const [weapon, setWeapon] = useState("");
     const [rarity, setRarity] = useState("");
     const [description, setDesc] = useState("");
+    const [displayedSearch, setDisplayedSearch] = useState('');
 
     const api_url = `https://api.genshin.dev/characters/${search}`
     async function getCharacter() {
@@ -40,7 +41,7 @@ const Genshin = () => {
     getCharacter();
     var characterPic = ""
     if (search === "") {
-        characterPic = `https://enka.network/ui/UI_AvatarIcon_Ayaka.png`
+        characterPic = `https://api.genshin.dev/characters/xingqiu/icon`
     } else {
         characterPic = `https://api.genshin.dev/characters/${search}/portrait`
     }
@@ -49,14 +50,20 @@ const Genshin = () => {
         return input.replace(/\s+/g, '-').toLowerCase();
     };
 
+    const handleSearchChange = (e) => {
+        const inputValue = e.target.value;
+        setDisplayedSearch(inputValue);
+        setSearch(formatSearchInput(inputValue));
+    };
+
     return (
         <div>
             <Navbar />
             <form className="search">
                 <input
                     className="input"
-                    value={search} // Use `value` instead of `defaultValue` for controlled input
-                    onChange={(e) => setSearch(formatSearchInput(e.target.value))}
+                    value={displayedSearch} // Use `value` instead of `defaultValue` for controlled input
+                    onChange={handleSearchChange}
                 />
             </form>
             <div className="container d-flex justify-content-center">

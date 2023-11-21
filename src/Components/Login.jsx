@@ -1,10 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 
 const Login = () => {
+    const { isLoggedIn } = useAuth(); // Get the isLoggedIn function from the useAuth hook
+
+    // If user is not logged in, redirect to the login page
+    if (isLoggedIn) {
+        return <Navigate to="/genshin" />;
+    }
     const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
