@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { useAuth } from '../AuthContext';
 import { Navigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import './Genshin.css';
 
 const Genshin = () => {
@@ -15,6 +16,10 @@ const Genshin = () => {
     const [characters, setCharacters] = useState([]);
     const [search, setSearch] = useState('');
     const [displayedSearch, setDisplayedSearch] = useState('');
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const charactersPerPage = 9;
+    const pagesVisited = pageNumber * charactersPerPage;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,9 +45,15 @@ const Genshin = () => {
         setSearch(formatSearchInput(inputValue));
     };
 
-    const filteredCharacters = characters.filter((character) =>
-        formatSearchInput(character).includes(search)
-    );
+    const filteredCharacters = characters
+        .filter((character) => formatSearchInput(character).includes(search))
+        .slice(pagesVisited, pagesVisited + charactersPerPage);
+
+    const pageCount = Math.ceil(characters.length / charactersPerPage);
+
+    const changePage = ({ selected }) => {
+        setPageNumber(selected);
+    };
 
     return (
         <div>
@@ -76,6 +87,17 @@ const Genshin = () => {
                         </div>
                     ))}
                 </div>
+                <ReactPaginate
+                    previousLabel={'Previous'}
+                    nextLabel={'Next'}
+                    pageCount={pageCount}
+                    onPageChange={changePage}
+                    containerClassName={'pagination'}
+                    previousLinkClassName={'pagination__link'}
+                    nextLinkClassName={'pagination__link'}
+                    disabledClassName={'pagination__link--disabled'}
+                    activeClassName={'pagination__link--active'}
+                />
             </div>
         </div>
     );
