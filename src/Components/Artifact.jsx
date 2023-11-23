@@ -1,47 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../AuthContext'; // Import the useAuth hook
 import Navbar from './Navbar';
-import './Genshin.css'
+import { useAuth } from '../AuthContext';
+import { Navigate } from 'react-router-dom';
+import './Genshin.css';
 
-const Honkai = () => {
-    const { isLoggedIn } = useAuth(); // Get the isLoggedIn function from the useAuth hook
+const Genshin = () => {
+    const { isLoggedIn } = useAuth();
 
-    // If user is not logged in, redirect to the login page
+    // If the user is not logged in, redirect to the login page
     if (!isLoggedIn) {
         return <Navigate to="/login" />;
     }
 
-
-    const [search, setSearch] = useState("");
-    const [name, setName] = useState([]);
-    const [twopceffect, setTwopceffect] = useState([]);
-    const [fourpceffect, setFourpceffect] = useState([]);
-    const [rarity, setRarity] = useState("");
+    const [artifacts, setArtifacts] = useState([]);
+    const [search, setSearch] = useState('');
     const [displayedSearch, setDisplayedSearch] = useState('');
 
-    const api_url = `https://api.genshin.dev/artifacts/${search}`
-    async function getArtifact() {
-        const response = await fetch(api_url)
-        const data = await response.json();
-        console.log(data);
-        setName(data.name);
-        setRarity(data.max_rarity);
-        setFourpceffect(data['4-piece_bonus']);
-        setTwopceffect(data['2-piece_bonus']);
-    }
     useEffect(() => {
-        console.log(search);
-        getArtifact();
-    }, [search])
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://api.genshin.dev/artifacts');
+                const data = await response.json();
+                setArtifacts(data);
+            } catch (error) {
+                console.error('Error fetching Artifacts:', error);
+            }
+        };
 
-    getArtifact();
-    var artiPic = ""
-    if (search === "") {
-        artiPic = `https://api.genshin.dev/artifacts/blizzard-strayer/flower-of-life`
-    } else {
-        artiPic = `https://api.genshin.dev/artifacts/${search}/flower-of-life`
-    }
+        fetchData();
+    }, []);
 
     const formatSearchInput = (input) => {
         return input.replace(/\s+/g, '-').toLowerCase();
@@ -53,41 +40,45 @@ const Honkai = () => {
         setSearch(formatSearchInput(inputValue));
     };
 
+    const filteredArtifacts = artifacts.filter((artifact) =>
+        formatSearchInput(artifact).includes(search)
+    );
 
     return (
         <div>
             <Navbar />
-            <div>
-                <form className="search">
-                    <input
-                        className="input"
-                        value={displayedSearch} // Use `value` instead of `defaultValue` for controlled input
-                        onChange={handleSearchChange}
-                    />
-                </form>
-                <div className="container d-flex justify-content-center">
-                    <div className="card profile-body">
-                        <div className="card-header">
-                            <img
-                                src={artiPic}
-                                alt="" className="mx-auto d-block"
-                            />
-                        </div>
-                        <div className="card-body">
-                            <div className="profile-description">
-                                <h5 className="card-title">Artifact Name : {name}</h5>
-                                <p className="card-title">Artifact Rarity : {rarity}</p>
-                                <p className="card-title">Artifact Two Piece Effect</p>
-                                <p className="card-title">{twopceffect}</p>
-                                <p className="card-title">Artifact Four Piece Effect</p>
-                                <p className="card-title">{fourpceffect}</p>
+            <form className="search">
+                <input
+                    className="input"
+                    value={displayedSearch}
+                    onChange={(e) => {
+                        setDisplayedSearch(e.target.value);
+                        setSearch(e.target.value);
+                    }}
+                    placeholder="Search Artifacts"
+                />
+            </form>
+            <div className="container mt-3">
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                    {filteredArtifacts.map((artifact) => (
+                        <div key={artifact} className="col">
+                            <div className="card h-100">
+                                <img
+                                    src={`https://api.genshin.dev/artifacts/${artifact}/flower-of-life`}
+                                    alt=""
+                                    className="mx-auto d-block img-fluid"
+                                    style={{ minWidth: '200px', minHeight: '200px', maxWidth: '100%', maxHeight: '100%' }}
+                                />
+                                <div className="card-body">
+                                    <h5 className="card-title">Artifact Name: {artifact}</h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>
     );
 };
 
-export default Honkai;
+export default Genshin;

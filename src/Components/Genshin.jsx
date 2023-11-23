@@ -1,50 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
-import { useAuth } from '../AuthContext';// Import the useAuth hook
+import React, { useEffect, useState } from 'react';
+import Navbar from './Navbar';
+import { useAuth } from '../AuthContext';
 import { Navigate } from 'react-router-dom';
-import './Genshin.css'
+import './Genshin.css';
 
 const Genshin = () => {
-    const { isLoggedIn } = useAuth(); // Get the isLoggedIn function from the useAuth hook
+    const { isLoggedIn } = useAuth();
 
-    // If user is not logged in, redirect to the login page
+    // If the user is not logged in, redirect to the login page
     if (!isLoggedIn) {
         return <Navigate to="/login" />;
     }
 
-    const [search, setSearch] = useState([]);
-    const [name, setName] = useState([]);
-    const [vision, setVision] = useState("");
-    const [nation, setNation] = useState("");
-    const [weapon, setWeapon] = useState("");
-    const [rarity, setRarity] = useState("");
-    const [description, setDesc] = useState("");
+    const [characters, setCharacters] = useState([]);
+    const [search, setSearch] = useState('');
     const [displayedSearch, setDisplayedSearch] = useState('');
 
-    const api_url = `https://api.genshin.dev/characters/${search}`
-    async function getCharacter() {
-        const response = await fetch(api_url)
-        const data = await response.json();
-        console.log(data);
-        setName(data.name);
-        setWeapon(data.weapon);
-        setVision(data.vision);
-        setNation(data.nation);
-        setRarity(data.rarity);
-        setDesc(data.description);
-    }
     useEffect(() => {
-        console.log(search);
-        getCharacter();
-    }, [search])
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://api.genshin.dev/characters');
+                const data = await response.json();
+                setCharacters(data);
+            } catch (error) {
+                console.error('Error fetching characters:', error);
+            }
+        };
 
-    getCharacter();
-    var characterPic = ""
-    if (search === "") {
-        characterPic = `https://api.genshin.dev/characters/xingqiu/icon`
-    } else {
-        characterPic = `https://api.genshin.dev/characters/${search}/portrait`
-    }
+        fetchData();
+    }, []);
 
     const formatSearchInput = (input) => {
         return input.replace(/\s+/g, '-').toLowerCase();
@@ -56,36 +40,45 @@ const Genshin = () => {
         setSearch(formatSearchInput(inputValue));
     };
 
+    const filteredCharacters = characters.filter((character) =>
+        formatSearchInput(character).includes(search)
+    );
+
     return (
         <div>
             <Navbar />
             <form className="search">
                 <input
                     className="input"
-                    value={displayedSearch} // Use `value` instead of `defaultValue` for controlled input
-                    onChange={handleSearchChange}
+                    value={displayedSearch}
+                    onChange={(e) => {
+                        setDisplayedSearch(e.target.value);
+                        setSearch(e.target.value);
+                    }}
+                    placeholder="Search characters"
                 />
             </form>
-            <div className="container d-flex justify-content-center">
-                <div className="card profile-body">
-                    <div className="card-header">
-                        <img src={characterPic} alt="" className="mx-auto d-block" />
-                    </div>
-                    <div className="card-body">
-                        <div className="profile-description">
-                            <h5 className="card-title">Character Name: {name}</h5>
-                            <p className="card-text">Character Vision: {vision}</p>
-                            <p className="card-text">Character Rarity: {rarity} Star</p>
-                            <p className="card-text">Character Weapon: {weapon}</p>
-                            <p className="card-text">Character Nation: {nation}</p>
-                            <p className="card-text">Character Description: {description}</p>
+            <div className="container mt-3">
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                    {filteredCharacters.map((character) => (
+                        <div key={character} className="col">
+                            <div className="card h-100">
+                                <img
+                                    src={`https://api.genshin.dev/characters/${character}/icon`}
+                                    alt=""
+                                    className="mx-auto d-block img-fluid"
+                                    style={{ minWidth: '200px', minHeight: '200px', maxWidth: '100%', maxHeight: '100%' }}
+                                />
+                                <div className="card-body">
+                                    <h5 className="card-title">Character Name: {character}</h5>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>
     );
+};
 
-}
-
-export default Genshin
+export default Genshin;

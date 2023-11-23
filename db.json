@@ -39,6 +39,22 @@
       "password": "sayang123",
       "cpassword": "sayang123",
       "id": 5
+    },
+    {
+      "fname": "raihan",
+      "lname": "dhea",
+      "email": "dheadanraihan@gmail.com",
+      "password": "12345678",
+      "cpassword": "12345678",
+      "id": 6
+    },
+    {
+      "fname": "DA",
+      "lname": "DA",
+      "email": "admin@admin.com",
+      "password": "12345678",
+      "cpassword": "12345678",
+      "id": 7
     }
   ]
 }
